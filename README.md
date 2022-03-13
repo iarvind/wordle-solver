@@ -1,4 +1,5 @@
 # wordle-solver
+This is wordle solver/helper where it can help you figure out correct word while you plan Wordle https://www.nytimes.com/games/wordle/index.html or on any app.
 To use this, run with python3 (It should run on Python 2 but I am noob on python and tested only on 3 :P )
 
 Go to the working directory and run via 
