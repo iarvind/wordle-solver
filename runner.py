@@ -13,37 +13,38 @@ def filterIt(masterList, fixPos, varPos, selectedWords):
 				invalidChars.append(c)
 	
 	for word in masterList:
+		isValid = True;
 		for key in fixPos.keys():
 			idxs = fixPos[key];
 			for idx in idxs:
 				if word[idx-1] != key:
-					print("leaving1" + word[idx-1] + ":" + key);
-					continue
+					# print("leaving1" + word[idx-1] + ":" + key);
+					isValid = False;
+					break
 
-		for key in varPos.keys():
-			idxs = varPos[key];
-			for idx in idxs:
-				if word[idx-1] == key:
-					# print("leaving2 " + word[idx-1] + ":" + key);
-					continue
+		if isValid:
+			for key in varPos.keys():
+				idxs = varPos[key];
+				for idx in idxs:
+					if word[idx-1] == key or key not in word:
+						isValid = False;
+						break
 
-		for c in invalidChars:
-			if c in word:
-				# print("leaving3 " + word + " " );
-				# print(invalidChars)
-				continue
+		if isValid:
+			for c in invalidChars:
+				if c in word:
+					# print("leaving3 " + word + " " );
+					# print(invalidChars)
+					isValid = False;
+					break
 
-		result.append(word);
+		if isValid:
+			result.append(word);
 	return result
 
 
-def analyse(fixPos, varPos, selectedWords):
+def analyse(fixPos, varPos, selectedWords, masterList):
 	print ("analysing...");	
-	file1 = open('five-letter-words.txt', 'r')
-	Lines = file1.readlines()
-	masterList = []
-	for line in Lines:
-		masterList.append(line.strip().upper())
 
 	#filter
 	masterList = filterIt(masterList, fixPos, varPos, selectedWords)
@@ -66,17 +67,28 @@ def getInput():
 			for v in var[1:]:
 				result[var[0]].append(int(v))
 		else:
-			print("received inputs: ")
-			print(result)
+			# print("received inputs: ")
+			# print(result)
 			break
 	return result
 
 
+def getDictionary():
+	file1 = open('five-letter-words.txt', 'r')
+	Lines = file1.readlines()
+	masterList = []
+	for line in Lines:
+		masterList.append(line.strip().upper())
+	return masterList;
+
+
 def main():
 	print("inside main")
+
 	selectedWords = []
 	start = True
 
+	masterList = getDictionary();
 	while True:
 		fixPos = {}
 		varPos = {}
@@ -88,12 +100,10 @@ def main():
 			print ("Provide var position. To end, provide .")
 			varPos = getInput();
 
-		list = analyse(fixPos, varPos, selectedWords)
+		masterList = analyse(fixPos, varPos, selectedWords, masterList)
 		if not start:
-			print(list)
+			print(masterList)
 		start = False
-
-
 
 if __name__ == '__main__':
 	print ("hi, let's solve it!");
