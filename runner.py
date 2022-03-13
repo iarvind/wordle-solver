@@ -63,12 +63,11 @@ def getInput():
 		if var != ".":
 			var = var.replace(':', ',')
 			var = var.split(',')
+			var[0] = var[0].upper();
 			result[var[0]] = []
 			for v in var[1:]:
 				result[var[0]].append(int(v))
 		else:
-			# print("received inputs: ")
-			# print(result)
 			break
 	return result
 
@@ -94,10 +93,11 @@ def main():
 		varPos = {}
 		if not start:
 			print ("what did you input?")
-			selectedWords.append(input())
-			print ("Provide fix position. To end, provide .")
+			enteredWord = input();
+			selectedWords.append(enteredWord.upper())
+			print ("Provide fix position. The green ones. For eg: if U should be on 4th position: provide 'U:4'. To end, provide .")
 			fixPos = getInput();
-			print ("Provide var position. To end, provide .")
+			print ("Provide var position. The green ones. For eg: if U should be not be on 4th position but some other location: provide 'U:4'. To end, provide .")
 			varPos = getInput();
 
 		masterList = analyse(fixPos, varPos, selectedWords, masterList)
